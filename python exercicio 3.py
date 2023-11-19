@@ -1,92 +1,80 @@
+
 def servico():
     print('Seja Bem-Vindo á CopyaLL do Marcelo Latiori')
     print('DIG - Digitalização')
     print('ICO - Impressão Colorida')
     print('IPB - Impressão Preto e Branco')
-    print('FOT - Fotocópia' )
-
+    print('FOT - Fotocópia')
+# função com valores de serviço
+def valor_servico():
+    return {'DIG': 1.10, 'ICO': 1.00, 'IPB': 0.40, 'FOT': 0.20}
+# função para escolha do servico
 def escolha_servico():
-    valor_DIG = 1.10
-    valor_ICO = 1.00
-    valor_IPB = 0,40
-
+    valores = valor_servico()
     while True:
-        escolha_servico = input ('Entre com o tipo de Serviço Desejadosssss :')
-        if (escolha_servico.upper() == 'DIG'.upper()):
-            print('valor do serviço é de : {:.2f}'.format(valor_DIG))
-            valor_do_servico = valor_DIG
-            return 1.10
-        elif (escolha_servico.upper() == 'ICO'.upper()):
-            print('valor do serviço é de {:.2f}:'.format(valor_ICO))
-            valor_do_servico = valor_ICO
-            return 1.00
-        elif (escolha_servico.upper() == 'IPB'.upper()):
-            print('valor do serviço é de {:.2f} :'.format(valor_IPB))
-            valor_do_servico = valor_IPB
-            return 0.40
-        elif (escolha_servico.upper() == 'FOT'.upper()):
-            print('valor do servico é de : {:.2f}'.format(valor_FOT))
-            valor_do_servico = valor_FOT
-            return 0.20
+        escolha = input('Entre com o tipo de Serviço Desejado: ').upper()    
+        if escolha in valores:
+            print(f'Valor do serviço é de: R$ {valores[escolha]:.2f}')
+            return escolha
         else:
-            print('serviço invalido')
-# inicio da função para escolher o numero de páginas
+            print('Serviço inválido. Escolha entre DIG, ICO, IPB ou FOT.')
+# função para definir a quantidade de páginas, um loop try ...except para que a entrada seja um numero inteiro;
 def num_pagina():
     while True:
         try:
             num_paginas = int(input('Qual o número de páginas: '))
-
-            if (num_paginas < 10):
-                print('numero de paginas sem desconto')
-                desconto = 0.00 * num_paginas
-            elif ((num_paginas >= 10) and (num_paginas < 100)):
-                desconto= 0.10
-                print('o numero de paginas com desconto é de 10%')
-            elif ((num_paginas >= 100) and (num_paginas < 1000)):
-                desconto = 0.15
-                print('o numero de pagina com desconto é de 15%')
-            elif ((num_paginas >= 1000) and (num_paginas < 10000)):
-                desconto = 0.20
-                print('o numero de  paginas com desconto é de 20%' )
-                return num_paginas, desconto
+            if num_paginas < 10:
+                print('Número de páginas sem desconto')
+                return num_paginas
+            elif 10 <= num_paginas < 100:
+                print('O número de páginas com desconto é de 10%')
+                return num_paginas - (num_paginas * 0.10)
+            elif 100 <= num_paginas < 1000:
+                print('O número de páginas com desconto é de 15%')
+                return num_paginas - (num_paginas * 0.15)
+            elif 1000 <= num_paginas < 10000:
+                print('O número de páginas com desconto é de 20%')
+                return num_paginas - (num_paginas * 0.20)
             else:
-                (num_paginas >= 10000)
-                print('Não é aceito pedidos nessa quantidades de paginas')
-
+                print('Não é aceito pedidos nessa quantidade de páginas')
         except ValueError:
-                print('Insira um valor valido: digite um valor numérico:  ')
-# inicio da função extras
-def extras():
+            print('Insira um valor válido: digite um valor numérico')
+# oferece serviços adicionais, usa um loop para garantir que a escolha seja valida e imprime o valor do serviço escolhido.
+# usa um try...except para garantir que o usuario para garantir que a entrada seja valida.
+def servico_extras():
     print("Serviços Extra: ")
-    print("1 - Encadernação simples (R$10.00)")
-    print("2 - Encadernação de capa dura (R$25.00)")
-    print("0 - Não desejo mais nada (R$0.00)")
-# escolha da função extras
-    escolha_extra = int(input("Escolha um Serviço  Extra Desejado: "))
+    print("1 - Encadernação simples (R$ 10.00)")
+    print("2 - Encadernação de capa dura (R$ 25.00)")
+    print("0 - Não desejo mais nada (R$ 0.00)")
+
     while True:
-        if escolha_extra == 1:
-            return 10.00
-        elif escolha_extra == 2:
-            return 25.00
-        elif escolha_extra == 0:
-            return 0.00
-        else:
-            print("Escolha de extra inválida. Não será adicionado nenhum valor extra.")
+        try:
+            adicional = int(input("Escolha um Serviço ADICIONAL: "))
+            if adicional == 1:
+                print('O valor do adicional é de: R$ 10.00')
+                return 10.00
+            elif adicional == 2:
+                print('O valor do adicional é de: R$ 25.00')
+                return 25.00
+            elif adicional == 0:
+                print('Sem adicional. R$ 0.00')
+                return 0.00
+            else:
+                print("Escolha de extra inválida. Não será adicionado nenhum valor extra.")
+        except ValueError:
+            print('Digite um Adicinal valido')
+# função para calcular os valores
+def calcular_valor_total(valor_servico, num_paginas, valor_extra):
+    return (valor_servico * num_paginas) + valor_extra
+# inicio do main chamando as funções anteriores
+servico()
+servico_escolhido = escolha_servico()
+valor_servicos = valor_servico()
+valor_paginas_com_desconto = num_pagina()
 
-# Início do main
+valor_extra = servico_extras()
+valor_total = calcular_valor_total(valor_servicos[servico_escolhido], valor_paginas_com_desconto, valor_extra)
 
-servico = servico()
+print(f'Valor com desconto: R$ {valor_total:.2f}')
+print('Obrigado por escolher os serviços da CopyaLL' )
 
-valor_servico = escolha_servico()
-num_paginas = num_pagina()
-escolha_extra = extras()
-
-# Calcula o valor sem desconto
-valor_sem_desconto = valor_servico * num_paginas
-
-# Calcula o valor com desconto e  extras
-valor_com_desconto = valor_sem_desconto - valor_sem_desconto * desconto + escolha_extra
-
-# Imprime os valores com desconto e sem desconto
-print(f"Valor sem desconto: R${valor_sem_desconto:.2f}")
-print(f"Valor com desconto e extras: R${valor_com_desconto:.2f}")
